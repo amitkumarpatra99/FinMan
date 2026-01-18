@@ -1,9 +1,10 @@
 "use client"
 import React, { useState } from 'react'
 import HeaderBox from '@/components/HeaderBox'
-import { accounts } from '@/constants';
+import { useBank } from '@/context/BankContext';
 
 const PaymentTransfer = () => {
+    const { accounts } = useBank();
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         sourceAccount: '',

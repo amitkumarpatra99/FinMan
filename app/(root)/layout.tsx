@@ -1,6 +1,7 @@
 import MobileNav from "@/components/MobileNav";
 import Sidebar from "@/components/Sidebar";
 import Image from "next/image";
+import { BankProvider } from "@/context/BankContext";
 
 export default function RootLayout({
     children,
@@ -20,7 +21,9 @@ export default function RootLayout({
                         <MobileNav user={loggedIn} />
                     </div>
                 </div>
-                {children}
+                <BankProvider>
+                    {children}
+                </BankProvider>
             </div>
         </main>
     );

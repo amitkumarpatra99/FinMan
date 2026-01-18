@@ -1,10 +1,15 @@
+'use client';
+
 import HeaderBox from '@/components/HeaderBox'
 import BankCard from '@/components/BankCard'
 import React from 'react'
-import { accounts, user } from '@/constants'
+import Link from 'next/link';
+import { useBank } from '@/context/BankContext';
+import { user } from '@/constants';
 
 const MyBanks = () => {
     const loggedIn = user;
+    const { accounts } = useBank();
 
     return (
         <section className='flex'>
