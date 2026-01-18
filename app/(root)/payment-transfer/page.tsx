@@ -18,7 +18,7 @@ const PaymentTransfer = () => {
         // Simulate API call
         setTimeout(() => {
             setIsLoading(false);
-            alert(`Transfer of $${formData.amount} to ${formData.targetAccount} successful!`);
+            alert(`Transfer of ₹${formData.amount} to ${formData.targetAccount} successful!`);
             setFormData({ sourceAccount: '', targetAccount: '', amount: '', note: '' });
         }, 1000);
     }
@@ -45,7 +45,7 @@ const PaymentTransfer = () => {
                         >
                             <option value="" disabled>Select Bank Account</option>
                             {accounts.map((acc) => (
-                                <option key={acc.id} value={acc.id}>{acc.name} ({acc.mask}) - ${acc.currentBalance}</option>
+                                <option key={acc.id} value={acc.id}>{acc.name} ({acc.mask}) - ₹{acc.currentBalance}</option>
                             ))}
                         </select>
                     </div>
