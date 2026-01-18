@@ -9,8 +9,11 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
             <section className="flex flex-col pb-8">
                 <div className="profile-banner" />
                 <div className="profile">
-                    <div className="profile-img">
+                    <div className="profile-img relative group">
                         <span className="text-5xl font-bold text-blue-500">{user.firstName[0]}</span>
+                        <Link href="/edit-profile" className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="text-white text-xs">Edit</span>
+                        </Link>
                     </div>
 
                     <div className="profile-details">

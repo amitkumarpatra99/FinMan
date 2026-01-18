@@ -6,11 +6,10 @@ import RightSidebar from '@/components/RightSidebar';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
 import Link from 'next/link';
 import { useBank } from '@/context/BankContext';
-import { transactions, user } from '@/constants';
+import { transactions } from '@/constants';
 
 const Home = () => {
-    const loggedIn = user;
-    const { accounts } = useBank();
+    const { accounts, user: loggedIn } = useBank();
     const totalCurrentBalance = accounts.reduce((acc, account) => acc + account.currentBalance, 0);
 
     return (
