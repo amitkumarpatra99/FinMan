@@ -83,4 +83,7 @@ declare type RecentTransactionsProps = {
     transactions: Transaction[];
     appwriteItemId: string;
     page: number;
+    rowsPerPage?: number;
+    enableSearch?: boolean;
+    enablePagination?: boolean;
 }

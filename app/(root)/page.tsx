@@ -35,6 +35,7 @@ const Home = () => {
                     transactions={transactions}
                     appwriteItemId={accounts[0]?.appwriteItemId}
                     page={1}
+                    rowsPerPage={5}
                 />
             </div>
 

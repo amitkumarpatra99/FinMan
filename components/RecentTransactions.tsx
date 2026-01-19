@@ -7,6 +7,9 @@ const RecentTransactions = ({
     transactions = [],
     appwriteItemId,
     page = 1,
+    rowsPerPage = 10,
+    enableSearch = false,
+    enablePagination = false,
 }: RecentTransactionsProps) => {
     return (
         <section className="recent-transactions">
@@ -36,7 +39,12 @@ const RecentTransactions = ({
                         key={account.id}
                         className="space-y-4"
                     >
-                        <TransactionsTable transactions={transactions.filter((t) => t.accountId === account.id)} />
+                        <TransactionsTable
+                            transactions={transactions.filter((t) => t.accountId === account.id)}
+                            rowsPerPage={rowsPerPage}
+                            enableSearch={enableSearch}
+                            enablePagination={enablePagination}
+                        />
                     </TabsContent>
                 ))}
             </Tabs>

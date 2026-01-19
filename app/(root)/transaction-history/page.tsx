@@ -46,6 +46,9 @@ const TransactionHistory = async ({ searchParams }: { searchParams: Promise<{ id
                         transactions={transactions}
                         appwriteItemId={account?.appwriteItemId}
                         page={1}
+                        rowsPerPage={10}
+                        enableSearch
+                        enablePagination
                     />
                 </section>
             </div>
