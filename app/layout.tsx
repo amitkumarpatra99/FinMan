@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   }
 };
 
+import { ThemeProvider } from "@/components/ThemeProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,7 +28,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${ibmPlexSerif.variable}`}>{children}</body>
+      <body className={`${inter.variable} ${ibmPlexSerif.variable}`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

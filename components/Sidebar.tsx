@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Footer from './Footer'
+import { ModeToggle } from './ModeToggle'
 
 const Sidebar = ({ user }: SiderbarProps) => {
     const pathname = usePathname();
@@ -48,10 +49,11 @@ const Sidebar = ({ user }: SiderbarProps) => {
                     )
                 })}
 
-                <div className="mt-auto pl-4 pb-4">
-                    <p className="text-12 font-semibold text-gray-600">
+                <div className="mt-auto pl-4 pb-4 flex items-center justify-between pr-4">
+                    <p className="text-12 font-semibold text-gray-600 dark:text-gray-400">
                         Make in India 🇮🇳
                     </p>
+                    <ModeToggle />
                 </div>
 
             </nav>

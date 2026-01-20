@@ -40,6 +40,31 @@ const TransactionsTable = ({
         )
         : filteredTransactions;
 
+    const handleExport = () => {
+        const headers = ["Transaction", "Amount", "Status", "Date", "Channel", "Category"];
+        const csvContent = [
+            headers.join(","),
+            ...filteredTransactions.map(t => [
+                t.name,
+                t.amount,
+                t.pending ? 'Pending' : 'Success',
+                t.date,
+                t.paymentChannel,
+                t.category
+            ].join(","))
+        ].join("\n");
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "transactions.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if (transactions.length === 0) {
         return (
             <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
@@ -50,18 +75,27 @@ const TransactionsTable = ({
 
     return (
         <div className="w-full flex flex-col gap-4">
-            {enableSearch && (
-                <div className="w-full max-w-sm">
-                    <Input
-                        placeholder="Search transactions..."
-                        value={searchTerm}
-                        onChange={(e) => {
-                            setSearchTerm(e.target.value);
-                            setCurrentPage(1); // Reset to first page on search
-                        }}
-                    />
-                </div>
-            )}
+            <div className="flex justify-between items-center gap-4 flex-wrap">
+                {enableSearch && (
+                    <div className="w-full max-w-sm">
+                        <Input
+                            placeholder="Search transactions..."
+                            value={searchTerm}
+                            onChange={(e) => {
+                                setSearchTerm(e.target.value);
+                                setCurrentPage(1); // Reset to first page on search
+                            }}
+                        />
+                    </div>
+                )}
+
+                <button
+                    onClick={handleExport}
+                    className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700 transition w-fit ml-auto"
+                >
+                    Export CSV
+                </button>
+            </div>
 
             <div className="w-full overflow-x-auto">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500">

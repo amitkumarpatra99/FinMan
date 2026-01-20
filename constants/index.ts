@@ -19,6 +19,11 @@ export const sidebarLinks = [
     route: "/payment-transfer",
     label: "Transfer Funds",
   },
+  {
+    imgURL: "/icons/filter-lines.svg",
+    route: "/analytics",
+    label: "Analytics",
+  },
 ];
 
 export const accounts: Account[] = [

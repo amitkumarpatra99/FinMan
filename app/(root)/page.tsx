@@ -35,6 +35,8 @@ const Home = () => {
                     appwriteItemId={accounts[0]?.appwriteItemId}
                     page={1}
                     rowsPerPage={5}
+                    enableSearch
+                    enablePagination
                 />
             </div>
 
