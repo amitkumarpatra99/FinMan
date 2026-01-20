@@ -11,70 +11,38 @@ declare type TotalBalanceBoxProps = {
     totalCurrentBalance: number;
 }
 
-declare type SiderbarProps = {
-    user: any;
+declare type User = {
+    $id: string;
+    email: string;
+    userId: string;
+    dwollaCustomerUrl: string;
+    dwollaCustomerId: string;
+    firstName: string;
+    lastName: string;
+    address1: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    dateOfBirth: string;
+    ssn: string;
+    action: string;
 }
 
-declare type DoughnutChartProps = {
-    accounts: Account[];
+declare type SiderbarProps = {
+    user: User;
 }
 
 declare type MobileNavProps = {
-    user: any;
-}
-
-declare type Bank = {
-    $id: string;
-    accountId: string;
-    bankId: string;
-    accessToken: string;
-    fundingSourceUrl: string;
-    userId: string;
-    shareableId: string;
-}
-
-declare type Transaction = {
-    id: string;
-    $id: string;
-    name: string;
-    paymentChannel: string;
-    type: string;
-    accountId: string;
-    amount: number;
-    pending: boolean;
-    category: string;
-    date: string;
-    image: string;
-}
-
-declare type Account = {
-    id: string;
-    availableBalance: number;
-    currentBalance: number;
-    officialName: string;
-    mask: string;
-    institutionId: string;
-    name: string;
-    type: string;
-    subtype: string;
-    appwriteItemId: string;
-    sharableId: string;
-}
-
-declare type CreditCardProps = {
-    account: Account;
-    userName: string;
-    showBalance?: boolean;
+    user: User;
 }
 
 declare type RightSidebarProps = {
-    user: any;
-    transactions: Transaction[];
+    user: User;
     banks: Account[];
 }
 
 declare type FooterProps = {
-    user: any;
+    user: User;
     type?: 'mobile' | 'desktop';
 }
 

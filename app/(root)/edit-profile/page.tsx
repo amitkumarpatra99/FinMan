@@ -10,10 +10,11 @@ const EditProfile = () => {
     const { user, updateUser } = useBank();
 
     const [isLoading, setIsLoading] = useState(false);
+
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
+        email: user?.email || '',
     });
 
     useEffect(() => {

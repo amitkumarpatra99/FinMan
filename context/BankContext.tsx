@@ -1,15 +1,15 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { accounts as initialAccounts, user as initialUser } from '@/constants';
 
 interface BankContextType {
     accounts: Account[];
-    user: any;
+    user: User;
     addBank: (bank: Account) => void;
     deleteBank: (id: string) => void;
     updateBank: (bank: Account) => void;
-    updateUser: (user: any) => void;
+    updateUser: (user: User) => void;
 }
 
 const BankContext = createContext<BankContextType | undefined>(undefined);
@@ -30,7 +30,7 @@ export function BankProvider({ children }: { children: React.ReactNode }) {
         setAccounts((prev) => prev.map((acc) => (acc.id === updatedBank.id ? updatedBank : acc)));
     };
 
-    const updateUser = (updatedUser: any) => {
+    const updateUser = (updatedUser: User) => {
         setUser(updatedUser);
     };
 

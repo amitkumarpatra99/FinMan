@@ -4,7 +4,6 @@ import HeaderBox from '@/components/HeaderBox'
 import RecentTransactions from '@/components/RecentTransactions';
 import RightSidebar from '@/components/RightSidebar';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
-import Link from 'next/link';
 import { useBank } from '@/context/BankContext';
 import { transactions } from '@/constants';
 
@@ -41,7 +40,6 @@ const Home = () => {
 
             <RightSidebar
                 user={loggedIn}
-                transactions={transactions}
                 banks={accounts}
             />
         </section>

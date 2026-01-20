@@ -1,0 +1,80 @@
+﻿
+> finman@0.1.0 lint
+> eslint
+
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\app\(root)\edit-bank\page.tsx
+  25:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\app\(root)\edit-bank\page.tsx:25:17
+  23 |             const bank = accounts.find((acc) => acc.id === bankId);
+  24 |             if (bank) {
+> 25 |                 setFormData({
+     |                 ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  26 |                     bankName: bank.name,
+  27 |                     firstName: user.firstName,
+  28 |                     lastName: user.lastName,  react-hooks/set-state-in-effect
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\app\(root)\edit-profile\page.tsx
+  21:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\app\(root)\edit-profile\page.tsx:21:13
+  19 |     useEffect(() => {
+  20 |         if (user) {
+> 21 |             setFormData({
+     |             ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  22 |                 firstName: user.firstName || '',
+  23 |                 lastName: user.lastName || '',
+  24 |                 email: user.email || '',  react-hooks/set-state-in-effect
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\app\(root)\page.tsx
+  7:8  warning  'Link' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\components\BankCard.tsx
+  5:40  warning  'showBalance' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\components\MobileNav.tsx
+  7:5  warning  'SheetDescription' is defined but never used  @typescript-eslint/no-unused-vars
+  8:5  warning  'SheetHeader' is defined but never used       @typescript-eslint/no-unused-vars
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\components\RecentTransactions.tsx
+  9:5  warning  'page' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\components\RightSidebar.tsx
+  6:31  warning  'transactions' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\components\ui\input.tsx
+  5:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\components\ui\sheet.tsx
+  5:1  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\context\BankContext.tsx
+   3:54  warning  'useEffect' is defined but never used     @typescript-eslint/no-unused-vars
+   8:11  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:24  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:38  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\tailwind.config.ts
+  138:13  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\amitk\OneDrive\Desktop\FINMAN\types\index.d.ts
+  15:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  71:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Γ£û 19 problems (12 errors, 7 warnings)
+

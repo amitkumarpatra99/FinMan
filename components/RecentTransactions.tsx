@@ -6,7 +6,6 @@ const RecentTransactions = ({
     accounts,
     transactions = [],
     appwriteItemId,
-    page = 1,
     rowsPerPage = 10,
     enableSearch = false,
     enablePagination = false,

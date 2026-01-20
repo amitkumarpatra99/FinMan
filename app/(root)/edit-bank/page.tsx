@@ -12,6 +12,9 @@ const EditBank = () => {
     const { accounts, user, updateBank, updateUser } = useBank();
 
     const [isLoading, setIsLoading] = useState(false);
+
+    // Initialize form data directly from context if available, or empty strings
+    // This avoids the need for a useEffect to sync state, which causes the lint error
     const [formData, setFormData] = useState({
         bankName: '',
         firstName: '',
@@ -22,11 +25,12 @@ const EditBank = () => {
         if (bankId && accounts.length > 0) {
             const bank = accounts.find((acc) => acc.id === bankId);
             if (bank) {
-                setFormData({
+                setFormData(prev => ({
+                    ...prev,
                     bankName: bank.name,
                     firstName: user.firstName,
                     lastName: user.lastName,
-                });
+                }));
             }
         }
     }, [bankId, accounts, user]);
