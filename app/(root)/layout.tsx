@@ -2,13 +2,14 @@ import MobileNav from "@/components/MobileNav";
 import Sidebar from "@/components/Sidebar";
 import Image from "next/image";
 import { BankProvider } from "@/context/BankContext";
+import { user } from "@/constants";
 
 export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const loggedIn = { firstName: 'Amit', lastName: 'JSM' };
+    const loggedIn = user;
 
     return (
         <main className="flex h-screen w-full font-inter">
