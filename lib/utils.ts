@@ -14,3 +14,15 @@ export const formatAmount = (amount: number): string => {
 
   return formatter.format(amount);
 };
+
+export function formUrlQuery({ params, key, value }: { params: string, key: string, value: string | null }) {
+  const currentUrl = new URLSearchParams(params);
+
+  if (value && value !== "") {
+    currentUrl.set(key, value);
+  } else {
+    currentUrl.delete(key);
+  }
+
+  return `?${currentUrl.toString()}`;
+}

@@ -4,6 +4,7 @@ import HeaderBox from '@/components/HeaderBox';
 import { useBank } from '@/context/BankContext';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 const EditProfile = () => {
     const router = useRouter();
@@ -42,6 +43,7 @@ const EditProfile = () => {
         // Simulate API delay
         setTimeout(() => {
             setIsLoading(false);
+            toast.success('Profile updated successfully!');
             router.back();
         }, 1000);
     };

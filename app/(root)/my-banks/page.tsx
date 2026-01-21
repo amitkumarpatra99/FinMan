@@ -5,6 +5,7 @@ import BankCard from '@/components/BankCard'
 import React from 'react'
 import Link from 'next/link';
 import { useBank } from '@/context/BankContext';
+import { toast } from 'sonner';
 
 const MyBanks = () => {
     const { accounts, deleteBank, user: loggedIn } = useBank();
@@ -37,7 +38,10 @@ const MyBanks = () => {
                                         ✎
                                     </Link>
                                     <button
-                                        onClick={() => deleteBank(a.id)}
+                                        onClick={() => {
+                                            deleteBank(a.id);
+                                            toast.success('Bank deleted successfully');
+                                        }}
                                         className="bg-red-500 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center text-xs"
                                         title="Delete Bank"
                                     >

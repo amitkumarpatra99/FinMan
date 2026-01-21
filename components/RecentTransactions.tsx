@@ -6,10 +6,11 @@ const RecentTransactions = ({
     accounts,
     transactions = [],
     appwriteItemId,
+    page = 1,
     rowsPerPage = 10,
     enableSearch = false,
     enablePagination = false,
-}: RecentTransactionsProps) => {
+}: RecentTransactionsProps & { page?: number }) => {
     return (
         <section className="recent-transactions">
             <header className="flex items-center justify-between">
@@ -43,6 +44,7 @@ const RecentTransactions = ({
                             rowsPerPage={rowsPerPage}
                             enableSearch={enableSearch}
                             enablePagination={enablePagination}
+                            page={page}
                         />
                     </TabsContent>
                 ))}

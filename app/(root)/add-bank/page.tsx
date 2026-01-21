@@ -4,6 +4,7 @@ import HeaderBox from '@/components/HeaderBox';
 import { useBank } from '@/context/BankContext';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 const AddBank = () => {
     const router = useRouter();
@@ -36,6 +37,7 @@ const AddBank = () => {
         // Simulate API delay
         setTimeout(() => {
             addBank(newBank);
+            toast.success('Bank added successfully!');
             setIsLoading(false);
             router.push('/');
         }, 1000);

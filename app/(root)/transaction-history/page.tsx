@@ -5,8 +5,9 @@ import { accounts, transactions } from '@/constants';
 import { formatAmount } from '@/lib/utils';
 import React from 'react'
 
-const TransactionHistory = async ({ searchParams }: { searchParams: Promise<{ id?: string }> }) => {
-    const { id } = await searchParams;
+const TransactionHistory = async ({ searchParams }: { searchParams: Promise<{ id?: string; page?: string }> }) => {
+    const { id, page } = await searchParams;
+    const currentPage = Number(page as string) || 1;
 
     const currentAccountId = id || accounts[0]?.appwriteItemId;
     const account = accounts.find((a) => a.appwriteItemId === currentAccountId) || accounts[0];
@@ -45,7 +46,7 @@ const TransactionHistory = async ({ searchParams }: { searchParams: Promise<{ id
                         accounts={accounts}
                         transactions={transactions}
                         appwriteItemId={account?.appwriteItemId}
-                        page={1}
+                        page={currentPage}
                         rowsPerPage={10}
                         enableSearch
                         enablePagination

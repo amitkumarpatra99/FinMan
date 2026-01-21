@@ -1,26 +1,49 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input } from "@/components/ui/input"
 import Pagination from "@/components/ui/pagination"
+import { useRouter, useSearchParams } from 'next/navigation'
+import { formUrlQuery } from '@/lib/utils'
 
 interface TransactionsTableProps {
     transactions: Transaction[];
     rowsPerPage?: number;
     enableSearch?: boolean;
     enablePagination?: boolean;
+    page?: number;
 }
 
 const TransactionsTable = ({
     transactions,
     rowsPerPage = 10,
     enableSearch = false,
-    enablePagination = false
+    enablePagination = false,
+    page = 1,
 }: TransactionsTableProps) => {
-    const [searchTerm, setSearchTerm] = useState('')
-    const [currentPage, setCurrentPage] = useState(1)
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
-    // Filter transactions based on search term
+    // Controlled search state
+    const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+
+    // Sync search term with URL with debounce
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            if (enableSearch) {
+                const newUrl = formUrlQuery({
+                    params: searchParams.toString(),
+                    key: 'q',
+                    value: searchTerm
+                });
+                router.push(newUrl, { scroll: false });
+            }
+        }, 300);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchTerm, enableSearch, router, searchParams]);
+
+    // Filter transactions
     const filteredTransactions = transactions.filter((t) => {
         const searchLower = searchTerm.toLowerCase();
         return (
@@ -32,13 +55,21 @@ const TransactionsTable = ({
 
     const totalPages = Math.ceil(filteredTransactions.length / rowsPerPage);
 
-    // Slice transactions for pagination
     const currentTransactions = enablePagination
         ? filteredTransactions.slice(
-            (currentPage - 1) * rowsPerPage,
-            currentPage * rowsPerPage
+            (page - 1) * rowsPerPage,
+            page * rowsPerPage
         )
         : filteredTransactions;
+
+    const handlePageChange = (newPage: number) => {
+        const newUrl = formUrlQuery({
+            params: searchParams.toString(),
+            key: 'page',
+            value: newPage.toString()
+        });
+        router.push(newUrl, { scroll: false });
+    };
 
     const handleExport = () => {
         const headers = ["Transaction", "Amount", "Status", "Date", "Channel", "Category"];
@@ -83,7 +114,6 @@ const TransactionsTable = ({
                             value={searchTerm}
                             onChange={(e) => {
                                 setSearchTerm(e.target.value);
-                                setCurrentPage(1); // Reset to first page on search
                             }}
                         />
                     </div>
@@ -146,9 +176,9 @@ const TransactionsTable = ({
 
             {enablePagination && totalPages > 1 && (
                 <Pagination
-                    page={currentPage}
+                    page={page}
                     totalPages={totalPages}
-                    onPageChange={setCurrentPage}
+                    onPageChange={handlePageChange}
                 />
             )}
         </div>
