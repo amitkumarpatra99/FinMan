@@ -14,25 +14,27 @@ interface BankContextType {
 
 const BankContext = createContext<BankContextType | undefined>(undefined);
 
-export function BankProvider({ children }: { children: React.ReactNode }) {
+export function BankProvider({ children, user }: { children: React.ReactNode, user?: User }) {
     // Initialize state properly to handle hydration
     const [accounts, setAccounts] = useState<Account[]>(initialAccounts);
-    const [user, setUser] = useState(initialUser);
+    const [currentUser, setCurrentUser] = useState(user || initialUser);
     const [isInitialized, setIsInitialized] = useState(false);
 
     // Initial load from localStorage
     useEffect(() => {
         const storedAccounts = localStorage.getItem('finman_accounts');
-        const storedUser = localStorage.getItem('finman_user');
+        // If we have a user from props, we might not want to overwrite with local storage immediately if props is fresher?
+        // But for now let's keep logic similar but prefer prop if available initially.
 
         if (storedAccounts) {
             setAccounts(JSON.parse(storedAccounts));
         }
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
+        // Sync user from prop if changed/available
+        if (user) {
+            setCurrentUser(user);
         }
         setIsInitialized(true);
-    }, []);
+    }, [user]);
 
     // Persist accounts whenever they change (after initialization)
     useEffect(() => {
@@ -42,11 +44,8 @@ export function BankProvider({ children }: { children: React.ReactNode }) {
     }, [accounts, isInitialized]);
 
     // Persist user whenever it changes (after initialization)
-    useEffect(() => {
-        if (isInitialized) {
-            localStorage.setItem('finman_user', JSON.stringify(user));
-        }
-    }, [user, isInitialized]);
+    // Avoid overwriting if we just loaded from prop?
+    // Let's simplify: if user is logged in, we use that.
 
     const addBank = (bank: Account) => {
         setAccounts((prev) => [...prev, bank]);
@@ -61,13 +60,13 @@ export function BankProvider({ children }: { children: React.ReactNode }) {
     };
 
     const updateUser = (updatedUser: User) => {
-        setUser(updatedUser);
+        setCurrentUser(updatedUser);
     };
 
     // Prevent hydration mismatch by rendering children only after mount (optional but safer)
     // For now we just return the provider, but with initial state matching server if empty
     return (
-        <BankContext.Provider value={{ accounts, user, addBank, deleteBank, updateBank, updateUser }}>
+        <BankContext.Provider value={{ accounts, user: currentUser, addBank, deleteBank, updateBank, updateUser }}>
             {children}
         </BankContext.Provider>
     );
