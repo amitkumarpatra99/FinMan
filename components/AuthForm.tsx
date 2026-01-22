@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
-import { Loader } from "lucide-react";
+import { INDIAN_STATES } from "@/constants";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
 
@@ -27,6 +27,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
     const router = useRouter();
     const [user, setUser] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
     const formSchema = authFormSchema(type);
@@ -72,7 +73,14 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
 
                 const newUser = await signUp(userData);
 
-                setUser(newUser);
+                if (newUser) {
+                    setSuccess(true);
+                    setTimeout(() => {
+                        router.push('/sign-in'); // Re-redirect to login page as requested
+                    }, 3000);
+                }
+
+                // setUser(newUser);
             }
 
             if (type === 'sign-in') {
@@ -131,6 +139,34 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                 </div>
             ) : (
                 <>
+                    {success && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-90">
+                            <div className="flex flex-col items-center gap-6 p-10 bg-white rounded-3xl shadow-2xl border border-gray-100 animate-in fade-in zoom-in duration-300">
+                                {/* Success Icon SVG */}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="128"
+                                    height="128"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="text-green-500 animate-bounce"
+                                >
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <path d="m9 11 3 3L22 4" />
+                                </svg>
+                                <div className="text-center space-y-2">
+                                    <h2 className="text-3xl font-bold text-gray-900">Success!</h2>
+                                    <p className="text-lg text-gray-600">Account created successfully.</p>
+                                    <p className="text-sm text-gray-500">Redirecting to login...</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                             {type === 'sign-up' && (
@@ -142,7 +178,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                                     <CustomInput control={form.control} name='address1' label="Address" placeholder='Enter your specific address' />
                                     <CustomInput control={form.control} name='city' label="City" placeholder='Enter your city' />
                                     <div className="flex gap-4">
-                                        <CustomInput control={form.control} name='state' label="State" placeholder='Example: NY' />
+                                        <CustomInput control={form.control} name='state' label="State" placeholder='Select your state' options={INDIAN_STATES} />
                                         <CustomInput control={form.control} name='postalCode' label="Postal Code" placeholder='Example: 11101' />
                                     </div>
                                     <div className="flex gap-4">
@@ -165,11 +201,11 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                                 <Button type="submit" disabled={isLoading} className="form-btn">
                                     {isLoading ? (
                                         <>
-                                            <Loader size={20} className="animate-spin" /> &nbsp;
                                             Loading...
                                         </>
                                     ) : type === "sign-in"
-                                        ? "Sign In" : "Sign Up"}
+                                        ? "Sign In"
+                                        : "Sign Up"}
                                 </Button>
                             </div>
                         </form>

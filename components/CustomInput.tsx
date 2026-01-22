@@ -14,10 +14,11 @@ interface CustomInput {
     control: Control<z.infer<typeof formSchema>>,
     name: FieldPath<z.infer<typeof formSchema>>,
     label: string,
-    placeholder: string
+    placeholder: string,
+    options?: string[]
 }
 
-const CustomInput = ({ control, name, label, placeholder }: CustomInput) => {
+const CustomInput = ({ control, name, label, placeholder, options }: CustomInput) => {
     return (
         <FormField
             control={control}
@@ -29,12 +30,26 @@ const CustomInput = ({ control, name, label, placeholder }: CustomInput) => {
                     </FormLabel>
                     <div className="flex w-full flex-col">
                         <FormControl>
-                            <Input
-                                placeholder={placeholder}
-                                className="input-class"
-                                type={name === 'password' ? 'password' : 'text'}
-                                {...field}
-                            />
+                            {options ? (
+                                <select
+                                    className="input-class"
+                                    {...field}
+                                >
+                                    <option value="" disabled>{placeholder}</option>
+                                    {options.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <Input
+                                    placeholder={placeholder}
+                                    className="input-class"
+                                    type={name === 'password' ? 'password' : 'text'}
+                                    {...field}
+                                />
+                            )}
                         </FormControl>
                         <FormMessage className="form-message mt-2" />
                     </div>
