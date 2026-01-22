@@ -20,6 +20,7 @@ export const signIn = async ({ email, password }: any) => {
       return parseStringify(response);
     } catch (error) {
       console.error('Error', error);
+      return null;
     }
 }
 

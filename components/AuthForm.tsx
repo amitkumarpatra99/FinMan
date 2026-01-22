@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
 
@@ -27,6 +27,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
     const router = useRouter();
     const [user, setUser] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const formSchema = authFormSchema(type);
 
@@ -36,12 +37,21 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
         defaultValues: {
             email: "",
             password: "",
+            firstName: "",
+            lastName: "",
+            address1: "",
+            city: "",
+            state: "",
+            postalCode: "",
+            dateOfBirth: "",
+            ssn: "",
         },
     });
 
     // 2. Define a submit handler.
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         setIsLoading(true);
+        setErrorMessage(""); // Reset error
 
         try {
             // Sign up with Appwrite & create plaid token
@@ -71,10 +81,15 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                     password: data.password,
                 })
 
-                if (response) router.push('/')
+                if (response) {
+                    router.push('/')
+                } else {
+                    setErrorMessage("Invalid email or password. Please try again.");
+                }
             }
         } catch (error) {
             console.log(error);
+            setErrorMessage("An unexpected error occurred.");
         } finally {
             setIsLoading(false);
         }
@@ -140,11 +155,17 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                             <CustomInput control={form.control} name='email' label="Email" placeholder='Enter your email' />
                             <CustomInput control={form.control} name='password' label="Password" placeholder='Enter your password' />
 
+                            {errorMessage && (
+                                <div className="text-red-500 text-sm font-medium">
+                                    {errorMessage}
+                                </div>
+                            )}
+
                             <div className="flex flex-col gap-4">
                                 <Button type="submit" disabled={isLoading} className="form-btn">
                                     {isLoading ? (
                                         <>
-                                            <Loader2 size={20} className="animate-spin" /> &nbsp;
+                                            <Loader size={20} className="animate-spin" /> &nbsp;
                                             Loading...
                                         </>
                                     ) : type === "sign-in"
