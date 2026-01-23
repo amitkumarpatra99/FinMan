@@ -2,7 +2,7 @@
 
 ![FINMAN Project](/public/project.png)
 
-FINMAN is a modern, responsive financial management dashboard built with Next.js. It helps users track their multiple bank accounts, view transaction history, and transfer funds seamlessly.
+FINMAN is a modern, responsive financial management dashboard built with Next.js. It helps users track their multiple bank accounts, view transaction history, and transfer funds seamlessly..
 
 ## Key Features
 
