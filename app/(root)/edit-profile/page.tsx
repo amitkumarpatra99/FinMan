@@ -20,10 +20,16 @@ const EditProfile = () => {
 
     useEffect(() => {
         if (user) {
-            setFormData({
-                firstName: user.firstName || '',
-                lastName: user.lastName || '',
-                email: user.email || '',
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setFormData(prev => {
+                if (prev.firstName === user.firstName && prev.lastName === user.lastName && prev.email === user.email) {
+                    return prev;
+                }
+                return {
+                    firstName: user.firstName || '',
+                    lastName: user.lastName || '',
+                    email: user.email || '',
+                };
             });
         }
     }, [user]);

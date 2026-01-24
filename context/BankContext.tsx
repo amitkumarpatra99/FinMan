@@ -21,19 +21,22 @@ export function BankProvider({ children, user }: { children: React.ReactNode, us
     const [isInitialized, setIsInitialized] = useState(false);
 
     // Initial load from localStorage
+    // Initial load from localStorage
     useEffect(() => {
         const storedAccounts = localStorage.getItem('finman_accounts');
-        // If we have a user from props, we might not want to overwrite with local storage immediately if props is fresher?
-        // But for now let's keep logic similar but prefer prop if available initially.
-
         if (storedAccounts) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setAccounts(JSON.parse(storedAccounts));
         }
-        // Sync user from prop if changed/available
+        setIsInitialized(true);
+    }, []);
+
+    // Sync user from prop if changed/available
+    useEffect(() => {
         if (user) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setCurrentUser(user);
         }
-        setIsInitialized(true);
     }, [user]);
 
     // Persist accounts whenever they change (after initialization)

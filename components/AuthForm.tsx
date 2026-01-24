@@ -10,12 +10,6 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
     Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
 } from "@/components/ui/form";
 import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
@@ -25,7 +19,7 @@ import { signIn, signUp } from "@/lib/actions/user.actions";
 
 const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
     const router = useRouter();
-    const [user, setUser] = useState<any>(null);
+    const [user] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");

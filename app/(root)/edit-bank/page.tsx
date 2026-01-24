@@ -25,12 +25,18 @@ const EditBank = () => {
         if (bankId && accounts.length > 0) {
             const bank = accounts.find((acc) => acc.id === bankId);
             if (bank) {
-                setFormData(prev => ({
-                    ...prev,
-                    bankName: bank.name,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                }));
+                // eslint-disable-next-line react-hooks/set-state-in-effect
+                setFormData(prev => {
+                    if (prev.bankName === bank.name && prev.firstName === user.firstName && prev.lastName === user.lastName) {
+                        return prev;
+                    }
+                    return {
+                        ...prev,
+                        bankName: bank.name,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                    };
+                });
             }
         }
     }, [bankId, accounts, user]);

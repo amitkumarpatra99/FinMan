@@ -103,3 +103,21 @@ declare type RecentTransactionsProps = {
     enableSearch?: boolean;
     enablePagination?: boolean;
 }
+
+declare type signInProps = {
+  email: string;
+  password: string;
+}
+
+declare type SignUpParams = {
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  dateOfBirth: string;
+  ssn: string;
+  email: string;
+  password: string;
+}
