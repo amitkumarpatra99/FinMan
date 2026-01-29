@@ -24,6 +24,38 @@ export const sidebarLinks = [
     route: "/analytics",
     label: "Analytics",
   },
+  {
+    imgURL: "/icons/money-send.svg",
+    route: "/budget",
+    label: "Budget",
+  },
+];
+
+export const budgets = [
+  {
+    id: 1,
+    name: "Groceries",
+    amount: 500,
+    spent: 250,
+  },
+  {
+    id: 2,
+    name: "Entertainment",
+    amount: 200,
+    spent: 150,
+  },
+  {
+    id: 3,
+    name: "Transportation",
+    amount: 100,
+    spent: 80,
+  },
+  {
+    id: 4,
+    name: "Utilities",
+    amount: 300,
+    spent: 200,
+  },
 ];
 
 export const accounts: Account[] = [
