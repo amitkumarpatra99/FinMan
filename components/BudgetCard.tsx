@@ -1,5 +1,5 @@
 import React from 'react'
-import { Progress } from "@/components/ui/progress"
+import { cn } from "@/lib/utils"
 
 interface BudgetCardProps {
     name: string;
@@ -19,7 +19,12 @@ const BudgetCard = ({ name, amount, spent }: BudgetCardProps) => {
                 </p>
             </div>
 
-            <Progress value={percentage} className="h-2 w-full bg-gray-200" indicatorClassName={percentage > 90 ? 'bg-red-500' : percentage > 75 ? 'bg-yellow-500' : 'bg-green-500'} />
+            <div className="h-2 w-full rounded-full bg-gray-200 overflow-hidden">
+                <div
+                    className={cn("h-full transition-all duration-500", percentage > 90 ? 'bg-red-500' : percentage > 75 ? 'bg-yellow-500' : 'bg-green-500')}
+                    style={{ width: `${percentage}%` }}
+                />
+            </div>
 
             <p className="text-12 text-gray-500">{percentage.toFixed(0)}% used</p>
         </div>

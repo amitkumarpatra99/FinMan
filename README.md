@@ -19,6 +19,7 @@ FINMAN is a modern, responsive financial management dashboard built with Next.js
     - **Transaction History**: Detailed list of your recent spending and income.
         - **Search**: Quickly find transactions by keyword.
         - **Pagination**: Navigate through large lists of transactions easily.
+    - **Budgeting**: (New) Track your expenses against set limits for different categories.
 - **Currency Support**: Fully localized for Indian Rupees (₹).
 - **Responsive Design**: Fully optimized for Desktop, Tablet, and Mobile devices (including complex layouts like Charts and Tables).
 
