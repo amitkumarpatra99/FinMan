@@ -7,6 +7,8 @@ import TotalBalanceBox from '@/components/TotalBalanceBox';
 import { useBank } from '@/context/BankContext';
 import { transactions } from '@/constants';
 
+import BankCard from '@/components/BankCard'; // Added import
+
 const Home = () => {
     const { accounts, user: loggedIn } = useBank();
     const totalCurrentBalance = accounts.reduce((acc, account) => acc + account.currentBalance, 0);
@@ -28,6 +30,26 @@ const Home = () => {
                         totalCurrentBalance={totalCurrentBalance}
                     />
                 </header>
+
+                {/* Mobile Banks Section */}
+                <section className="flex w-full flex-col gap-6 xl:hidden">
+                    <div className="flex w-full justify-between">
+                        <h2 className="header-2">My Banks</h2>
+                    </div>
+                    {accounts?.length > 0 && (
+                        <div className="flex w-full flex-nowrap gap-4 overflow-x-auto no-scrollbar pb-4">
+                            {accounts.map((account: Account) => (
+                                <div key={account.id} className="min-w-[300px]">
+                                    <BankCard
+                                        account={account}
+                                        userName={`${loggedIn?.firstName} ${loggedIn?.lastName}`}
+                                        showBalance={false}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
 
                 <RecentTransactions
                     accounts={accounts}
