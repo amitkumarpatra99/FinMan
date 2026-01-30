@@ -13,10 +13,11 @@ interface CustomInput {
     name: FieldPath<z.infer<ReturnType<typeof authFormSchema>>>,
     label: string,
     placeholder: string,
-    options?: string[]
+    options?: string[],
+    icon?: React.ElementType
 }
 
-const CustomInput = ({ control, name, label, placeholder, options }: CustomInput) => {
+const CustomInput = ({ control, name, label, placeholder, options, icon: Icon }: CustomInput) => {
     return (
         <FormField
             control={control}
@@ -41,12 +42,19 @@ const CustomInput = ({ control, name, label, placeholder, options }: CustomInput
                                     ))}
                                 </select>
                             ) : (
-                                <Input
-                                    placeholder={placeholder}
-                                    className="input-class"
-                                    type={name === 'password' ? 'password' : 'text'}
-                                    {...field}
-                                />
+                                <div className="relative">
+                                    {Icon && (
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                            <Icon size={18} />
+                                        </div>
+                                    )}
+                                    <Input
+                                        placeholder={placeholder}
+                                        className={`input-class ${Icon ? 'pl-10' : ''}`}
+                                        type={name === 'password' ? 'password' : 'text'}
+                                        {...field}
+                                    />
+                                </div>
                             )}
                         </FormControl>
                         <FormMessage className="form-message mt-2" />
