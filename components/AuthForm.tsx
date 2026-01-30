@@ -92,30 +92,31 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
     return (
         <div className="flex min-h-screen w-full">
             {/* Left Side - Form */}
-            <section className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24 bg-white w-full lg:w-1/2">
-                <div className="mx-auto w-full max-w-sm lg:w-96">
-                    <div className="mb-10">
-                        <Link href="/" className="flex items-center gap-2 mb-8 cursor-pointer group">
-                            <Image
-                                src="/icons/logo.svg"
-                                width={40}
-                                height={40}
-                                alt="FinMan logo"
-                                className="group-hover:scale-105 transition-transform duration-300"
-                            />
-                            <h1 className="text-3xl font-ibm-plex-serif font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+            <section className="flex flex-1 flex-col justify-center px-6 py-8 sm:px-10 lg:flex-none lg:px-20 xl:px-24 bg-white w-full lg:w-1/2 transition-all duration-300">
+                <div className="mx-auto w-full max-w-[420px] lg:max-w-sm">
+                    <div className="mb-8 lg:mb-12">
+                        <Link href="/" className="flex items-center gap-3 mb-6 cursor-pointer group">
+                            <div className="relative size-[40px]">
+                                <Image
+                                    src="/icons/logo.svg"
+                                    fill
+                                    alt="FinMan logo"
+                                    className="object-contain group-hover:scale-105 transition-transform duration-300"
+                                />
+                            </div>
+                            <h1 className="text-2xl lg:text-3xl font-ibm-plex-serif font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
                                 FinMan
                             </h1>
                         </Link>
 
-                        <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">
+                        <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 mb-2 lg:mb-3">
                             {user
                                 ? "Link Account"
                                 : type === "sign-in"
                                     ? "Welcome back"
                                     : "Create an account"}
                         </h2>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm lg:text-base text-gray-600">
                             {user
                                 ? "Link your account to get started"
                                 : type === "sign-in"
@@ -131,14 +132,14 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                     ) : (
                         <>
                             {success && (
-                                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-                                    <div className="flex flex-col items-center gap-6 p-8 bg-white rounded-3xl shadow-2xl border border-gray-100 animate-in zoom-in-95 duration-300 max-w-sm w-full mx-4">
+                                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300 px-4">
+                                    <div className="flex flex-col items-center gap-6 p-6 lg:p-8 bg-white rounded-3xl shadow-2xl border border-gray-100 animate-in zoom-in-95 duration-300 w-full max-w-sm">
                                         <div className="rounded-full bg-green-100 p-3">
-                                            <CheckCircle2 className="h-12 w-12 text-green-600 animate-bounce" />
+                                            <CheckCircle2 className="h-10 w-10 lg:h-12 lg:w-12 text-green-600 animate-bounce" />
                                         </div>
                                         <div className="text-center space-y-2">
-                                            <h2 className="text-2xl font-bold text-gray-900">Success!</h2>
-                                            <p className="text-gray-600">Account created successfully.</p>
+                                            <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Success!</h2>
+                                            <p className="text-sm lg:text-base text-gray-600">Account created successfully.</p>
                                             <p className="text-sm text-blue-600 font-medium animate-pulse">Redirecting to login...</p>
                                         </div>
                                     </div>
@@ -146,33 +147,33 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                             )}
 
                             <Form {...form}>
-                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 lg:space-y-6">
                                     {type === 'sign-up' && (
-                                        <div className="space-y-4 animate-in slide-in-from-bottom-4 duration-500 fade-in fill-mode-backwards delay-100">
-                                            <div className="flex gap-4">
+                                        <div className="space-y-3 lg:space-y-4 animate-in slide-in-from-bottom-4 duration-500 fade-in fill-mode-backwards delay-100">
+                                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                                                 <CustomInput control={form.control} name='firstName' label="First Name" placeholder='John' icon={User} />
                                                 <CustomInput control={form.control} name='lastName' label="Last Name" placeholder='Doe' icon={User} />
                                             </div>
                                             <CustomInput control={form.control} name='address1' label="Address" placeholder='123 Main St' icon={MapPin} />
                                             <CustomInput control={form.control} name='city' label="City" placeholder='New York' icon={Building} />
-                                            <div className="flex gap-4">
+                                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                                                 <CustomInput control={form.control} name='state' label="State" placeholder='Select State' options={INDIAN_STATES} />
                                                 <CustomInput control={form.control} name='postalCode' label="Postal Code" placeholder='11101' icon={MapPin} />
                                             </div>
-                                            <div className="flex gap-4">
+                                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                                                 <CustomInput control={form.control} name='dateOfBirth' label="Date of Birth" placeholder='YYYY-MM-DD' icon={Calendar} />
                                                 <CustomInput control={form.control} name='ssn' label="SSN" placeholder='1234' icon={Hash} />
                                             </div>
                                         </div>
                                     )}
 
-                                    <div className="space-y-4 animate-in slide-in-from-bottom-4 duration-500 fade-in fill-mode-backwards delay-200">
+                                    <div className="space-y-3 lg:space-y-4 animate-in slide-in-from-bottom-4 duration-500 fade-in fill-mode-backwards delay-200">
                                         <CustomInput control={form.control} name='email' label="Email" placeholder='john.doe@example.com' icon={Mail} />
                                         <CustomInput control={form.control} name='password' label="Password" placeholder='••••••••' icon={Lock} />
                                     </div>
 
                                     {errorMessage && (
-                                        <div className="rounded-md bg-red-50 p-4 animate-in shake">
+                                        <div className="rounded-md bg-red-50 p-3 lg:p-4 animate-in shake">
                                             <div className="flex">
                                                 <div className="ml-3">
                                                     <h3 className="text-sm font-medium text-red-800">{errorMessage}</h3>
@@ -185,7 +186,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                                         <Button
                                             type="submit"
                                             disabled={isLoading}
-                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 rounded-lg shadow-lg active:scale-[0.98] transition-all duration-200"
+                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-5 lg:py-6 rounded-lg shadow-lg active:scale-[0.98] transition-all duration-200 text-base"
                                         >
                                             {isLoading ? (
                                                 <div className="flex items-center gap-2">
@@ -224,13 +225,14 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                     <div className="absolute inset-0 bg-[url('/icons/lines.svg')] opacity-20 bg-cover bg-center" />
                     <div className="flex flex-col items-center justify-center h-full px-12 text-center text-white z-10 relative">
                         <div className="mb-8 p-4 bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/20">
-                            <Image
-                                src="/icons/logo.svg"
-                                width={100}
-                                height={100}
-                                alt="FinMan"
-                                className="brightness-0 invert drop-shadow-lg"
-                            />
+                            <div className="relative h-[100px] w-[100px]">
+                                <Image
+                                    src="/icons/logo.svg"
+                                    fill
+                                    alt="FinMan"
+                                    className="brightness-0 invert drop-shadow-lg object-contain"
+                                />
+                            </div>
                         </div>
                         <h2 className="text-4xl font-bold mb-6 drop-shadow-md">Manage Your Finance with Confidence</h2>
                         <p className="text-lg text-blue-100 max-w-md mx-auto leading-relaxed">
