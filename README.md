@@ -1,4 +1,4 @@
-# FINMAN - Financial Management
+# FINMAN - Financial Management Application
 
 ![FINMAN Project](/public/project.png)
 
