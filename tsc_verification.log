@@ -1,9 +1,0 @@
-components/AuthForm.tsx(16,10): error TS2305: Module '"lucide-react"' has no exported member 'Loader2'.
-components/AuthForm.tsx(16,19): error TS2305: Module '"lucide-react"' has no exported member 'Mail'.
-components/AuthForm.tsx(16,25): error TS2305: Module '"lucide-react"' has no exported member 'Lock'.
-components/AuthForm.tsx(16,31): error TS2305: Module '"lucide-react"' has no exported member 'User'.
-components/AuthForm.tsx(16,37): error TS2305: Module '"lucide-react"' has no exported member 'MapPin'.
-components/AuthForm.tsx(16,45): error TS2305: Module '"lucide-react"' has no exported member 'Building'.
-components/AuthForm.tsx(16,55): error TS2305: Module '"lucide-react"' has no exported member 'Calendar'.
-components/AuthForm.tsx(16,65): error TS2305: Module '"lucide-react"' has no exported member 'Hash'.
-components/AuthForm.tsx(16,71): error TS2305: Module '"lucide-react"' has no exported member 'CheckCircle2'.
