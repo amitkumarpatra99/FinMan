@@ -13,7 +13,7 @@ import { authFormSchema } from "@/lib/utils";
 import { INDIAN_STATES } from "@/constants";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
-import { Loader2, Mail, Lock, User, MapPin, Building, Calendar, Hash, CheckCircle2 } from "lucide-react";
+import { Loader, Mail, Lock, User, MapPin, Building, Calendar, Hash, CheckCircle2 } from "lucide-react";
 
 const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
     const router = useRouter();
@@ -190,7 +190,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                                         >
                                             {isLoading ? (
                                                 <div className="flex items-center gap-2">
-                                                    <Loader2 size={20} className="animate-spin" />
+                                                    <Loader size={20} className="animate-spin" />
                                                     Loading...
                                                 </div>
                                             ) : type === "sign-in"
