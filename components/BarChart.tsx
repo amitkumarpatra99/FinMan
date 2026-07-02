@@ -27,31 +27,41 @@ export const options = {
             position: 'top' as const,
         },
         title: {
-            display: true,
-            text: 'Monthly Spending',
+            display: false,
         },
     },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const defaultLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export const data = {
-    labels,
-    datasets: [
-        {
-            label: 'Spending',
-            data: [1200, 1900, 300, 500, 200, 300, 1500],
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        },
-        {
-            label: 'Income',
-            data: [2500, 2500, 2500, 2600, 2500, 2500, 3000],
-            backgroundColor: 'rgba(75, 192, 192, 0.5)',
-        }
-    ],
-};
+interface BarChartProps {
+    spendingData?: number[];
+    incomeData?: number[];
+    labels?: string[];
+}
 
-const BarChart = () => {
+const BarChart = ({ 
+    spendingData = [1200, 1900, 300, 500, 200, 300, 1500], 
+    incomeData = [2500, 2500, 2500, 2600, 2500, 2500, 3000], 
+    labels = defaultLabels.slice(0, 7)
+}: BarChartProps) => {
+    
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: 'Spending (₹)',
+                data: spendingData,
+                backgroundColor: 'rgba(239, 68, 68, 0.6)',
+            },
+            {
+                label: 'Income (₹)',
+                data: incomeData,
+                backgroundColor: 'rgba(34, 197, 94, 0.6)',
+            }
+        ],
+    };
+
     return <Bar options={options} data={data} />;
 }
 
