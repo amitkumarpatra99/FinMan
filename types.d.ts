@@ -121,3 +121,10 @@ declare type SignUpParams = {
   email: string;
   password: string;
 }
+
+declare type Budget = {
+  id: number;
+  name: string;
+  amount: number;
+  spent: number;
+}
