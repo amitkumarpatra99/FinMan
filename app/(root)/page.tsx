@@ -5,12 +5,11 @@ import RecentTransactions from '@/components/RecentTransactions';
 import RightSidebar from '@/components/RightSidebar';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
 import { useBank } from '@/context/BankContext';
-import { transactions } from '@/constants';
 
-import BankCard from '@/components/BankCard'; // Added import
+import BankCard from '@/components/BankCard';
 
 const Home = () => {
-    const { accounts, user: loggedIn } = useBank();
+    const { accounts, transactions, user: loggedIn } = useBank();
     const totalCurrentBalance = accounts.reduce((acc, account) => acc + account.currentBalance, 0);
 
     return (
