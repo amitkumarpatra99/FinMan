@@ -13,7 +13,7 @@ import { authFormSchema } from "@/lib/utils";
 import { INDIAN_STATES } from "@/constants";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
-import { Loader, Mail, Lock, User, MapPin, Building, Calendar, Hash, CheckCircle2 } from "lucide-react";
+import { Loader2, Mail, Lock, User, MapPin, Building, Calendar, Hash, CheckCircle2, Sparkles, Info } from "lucide-react";
 
 const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
     const router = useRouter();
@@ -21,6 +21,33 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const isDemoMode = !process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || !process.env.NEXT_PUBLIC_APPWRITE_PROJECT;
+
+    const handleQuickLogin = async () => {
+        setIsLoading(true);
+        setErrorMessage("");
+        try {
+            const data = {
+                email: "demo@finman.com",
+                password: "demopassword123"
+            };
+            form.setValue("email", data.email);
+            form.setValue("password", data.password);
+            
+            const response = await signIn(data);
+            if (response) {
+                router.push('/');
+            } else {
+                setErrorMessage("Invalid credentials for quick login.");
+            }
+        } catch (error) {
+            console.log(error);
+            setErrorMessage("An unexpected error occurred during quick login.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const formSchema = authFormSchema(type);
 
@@ -146,6 +173,31 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                                 </div>
                             )}
 
+                            {isDemoMode && (
+                                <div className="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-100 flex flex-col gap-3 animate-in fade-in duration-300">
+                                    <div className="flex gap-2.5">
+                                        <Info className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
+                                        <div className="space-y-1">
+                                            <h4 className="text-sm font-semibold text-blue-900">Sandbox Demo Mode Active</h4>
+                                            <p className="text-xs text-blue-700 leading-relaxed">
+                                                Appwrite is not configured in `.env`. You can sign up with any details or log in with any email and password (min 8 characters).
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {type === "sign-in" && (
+                                        <Button
+                                            type="button"
+                                            onClick={handleQuickLogin}
+                                            disabled={isLoading}
+                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] transition-all"
+                                        >
+                                            <Sparkles className="h-3.5 w-3.5" />
+                                            Quick Demo Login
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
+
                             <Form {...form}>
                                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 lg:space-y-6">
                                     {type === 'sign-up' && (
@@ -190,7 +242,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                                         >
                                             {isLoading ? (
                                                 <div className="flex items-center gap-2">
-                                                    <Loader size={20} className="animate-spin" />
+                                                    <Loader2 size={20} className="animate-spin" />
                                                     Loading...
                                                 </div>
                                             ) : type === "sign-in"
