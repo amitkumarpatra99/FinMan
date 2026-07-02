@@ -1,5 +1,5 @@
 import React from 'react'
-import { cn } from "@/lib/utils"
+import { cn, formatAmount } from "@/lib/utils"
 
 interface BudgetCardProps {
     name: string;
@@ -15,7 +15,7 @@ const BudgetCard = ({ name, amount, spent }: BudgetCardProps) => {
             <div className="flex justify-between">
                 <h2 className="text-16 font-semibold text-gray-900">{name}</h2>
                 <p className="text-12 font-medium text-gray-600">
-                    ${spent} / ${amount}
+                    {formatAmount(spent)} / {formatAmount(amount)}
                 </p>
             </div>
 

@@ -2,9 +2,10 @@
 import React, { useState } from 'react'
 import HeaderBox from '@/components/HeaderBox'
 import { useBank } from '@/context/BankContext';
+import { toast } from 'sonner';
 
 const PaymentTransfer = () => {
-    const { accounts } = useBank();
+    const { accounts, addTransaction, updateAccountBalance } = useBank();
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         sourceAccount: '',
@@ -16,10 +17,44 @@ const PaymentTransfer = () => {
     const handleTransfer = (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
+
+        const sourceAcc = accounts.find(a => a.id === formData.sourceAccount);
+        if (!sourceAcc) {
+            toast.error("Source account not found.");
+            setIsLoading(false);
+            return;
+        }
+
+        const transferAmount = Number(formData.amount);
+        if (sourceAcc.currentBalance < transferAmount) {
+            toast.error("Insufficient balance in source account.");
+            setIsLoading(false);
+            return;
+        }
+
         // Simulate API call
         setTimeout(() => {
+            // Deduct from source
+            updateAccountBalance(formData.sourceAccount, transferAmount, 'debit');
+
+            // Add transaction record
+            const newTxn = {
+                id: `txn_${Date.now()}`,
+                $id: `txn_${Date.now()}`,
+                name: formData.note ? `Transfer: ${formData.note}` : `Transfer to ${formData.targetAccount}`,
+                paymentChannel: "online",
+                type: "debit",
+                accountId: formData.sourceAccount,
+                amount: transferAmount,
+                pending: false,
+                category: "Transfer",
+                date: new Date().toISOString().split('T')[0],
+                image: "/icons/money-send.svg"
+            };
+            addTransaction(newTxn);
+
             setIsLoading(false);
-            alert(`Transfer of ₹${formData.amount} to ${formData.targetAccount} successful!`);
+            toast.success(`Transfer of ₹${transferAmount.toFixed(2)} to ${formData.targetAccount} successful!`);
             setFormData({ sourceAccount: '', targetAccount: '', amount: '', note: '' });
         }, 1000);
     }
