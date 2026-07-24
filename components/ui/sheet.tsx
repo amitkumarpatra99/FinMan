@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
-// @ts-expect-error -- Lucide icon compatibility issue
 import { XIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
