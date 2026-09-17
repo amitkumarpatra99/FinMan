@@ -8,7 +8,7 @@ FINMAN is a modern, responsive financial management dashboard built with Next.js
 
 - **Dashboard Overview**: View total balance, recent transactions, and connected banks at a glance.
 - **Bank Management**:
-    - **Add Bank**: Easily link new bank accounts to your profile.
+    - **Add Bank**: Easily link new bank accounts to your profile
     - **Edit Bank**: Update the display name of your banks.
     - **Delete Bank**: Remove unused or closed bank accounts from your dashboard.
 - **Profile Customization**:
