@@ -25,7 +25,6 @@ const Budget = () => {
             return;
         }
 
-        // Check if category budget already exists
         const exists = budgets.some(b => b.name.toLowerCase() === name.trim().toLowerCase());
         if (exists) {
             toast.error('A budget for this category already exists.');
@@ -60,7 +59,6 @@ const Budget = () => {
                         <BudgetList />
                     </div>
 
-                    {/* Create Budget Form */}
                     <div className="w-full lg:w-[320px] shrink-0">
                         <form onSubmit={handleCreateBudget} className="flex flex-col gap-4 p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
                             <h3 className="text-lg font-semibold text-gray-900">Create New Budget</h3>
