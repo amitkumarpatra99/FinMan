@@ -9,7 +9,6 @@ import React from 'react'
 const Analytics = () => {
     const { accounts, transactions } = useBank();
 
-    // 1. Group Spending by Category (debit only)
     const spendingByCategory: Record<string, number> = {};
     transactions.forEach(t => {
         if (t.type === 'debit') {
