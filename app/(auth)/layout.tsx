@@ -15,10 +15,11 @@ export default function AuthLayout({
                         alt="Auth image"
                         width={500}
                         height={500}
-                        className="rounded-l-xl object-contain" // removed 'object-contain' and used 'object-cover' usually but here following provided classes or similar
+                        className="rounded-l-xl object-contain"
                     />
                 </div>
             </div>
         </main>
     );
 }
+
