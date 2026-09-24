@@ -33,7 +33,6 @@ import {
   Info,
 } from "lucide-react";
 
-// Predefined frequent beneficiaries
 interface Beneficiary {
   id: string;
   name: string;
@@ -113,20 +112,16 @@ const AMOUNT_PRESETS = [500, 1000, 2000, 5000, 10000];
 export default function PaymentTransfer() {
   const { accounts, transactions, addTransaction, updateAccountBalance } = useBank();
 
-  // Active Transfer Method Tab
   const [transferMode, setTransferMode] = useState<"bank" | "upi" | "internal" | "qr" | "phone">("bank");
 
-  // Selected Source Account (defaults to first account)
   const [selectedAccountId, setSelectedAccountId] = useState<string>(accounts[0]?.id || "");
 
-  // Update selected account if accounts load/change
   useEffect(() => {
     if (!selectedAccountId && accounts.length > 0) {
       setSelectedAccountId(accounts[0].id);
     }
   }, [accounts, selectedAccountId]);
 
-  // Form Fields
   const [targetAccount, setTargetAccount] = useState("");
   const [confirmAccount, setConfirmAccount] = useState("");
   const [beneficiaryName, setBeneficiaryName] = useState("");
@@ -142,12 +137,10 @@ export default function PaymentTransfer() {
   const [note, setNote] = useState("");
   const [saveAsBeneficiary, setSaveAsBeneficiary] = useState(false);
 
-  // Transfer Speed / Schedule
   const [transferSpeed, setTransferSpeed] = useState<"instant" | "scheduled" | "recurring">("instant");
   const [scheduledDate, setScheduledDate] = useState(new Date().toISOString().split("T")[0]);
   const [recurringFrequency, setRecurringFrequency] = useState<"weekly" | "monthly">("monthly");
 
-  // Beneficiaries State
   const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("finman_beneficiaries");
@@ -168,7 +161,6 @@ export default function PaymentTransfer() {
     }
   }, [beneficiaries]);
 
-  // Modals & States
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [securityPin, setSecurityPin] = useState(["", "", "", ""]);
@@ -176,25 +168,20 @@ export default function PaymentTransfer() {
   const [completedTxn, setCompletedTxn] = useState<any | null>(null);
   const [copiedRef, setCopiedRef] = useState(false);
 
-  // QR Scanner Simulation State
   const [qrScanning, setQrScanning] = useState(false);
   const [qrScanned, setQrScanned] = useState(false);
   const [activeQrView, setActiveQrView] = useState<"scan" | "my_qr">("scan");
 
-  // Filter for Recent Transfers Feed
   const [transferSearch, setTransferSearch] = useState("");
 
-  // Selected Source Account Object
   const sourceAccount = useMemo(() => {
     return accounts.find((a) => a.id === selectedAccountId) || accounts[0];
   }, [accounts, selectedAccountId]);
 
-  // Destination Internal Account
   const internalTargetAccount = useMemo(() => {
     return accounts.find((a) => a.id === internalTargetAccountId) || accounts.find((a) => a.id !== selectedAccountId);
   }, [accounts, internalTargetAccountId, selectedAccountId]);
 
-  // Auto-detect Bank based on IFSC
   useEffect(() => {
     if (ifscCode.length >= 4) {
       const prefix = ifscCode.substring(0, 4).toUpperCase();
@@ -211,7 +198,6 @@ export default function PaymentTransfer() {
     }
   }, [ifscCode]);
 
-  // UPI verification simulation
   const handleVerifyUpi = () => {
     if (!upiId || !upiId.includes("@")) {
       toast.error("Please enter a valid UPI ID (e.g., name@okaxis)");
@@ -227,7 +213,6 @@ export default function PaymentTransfer() {
     }, 600);
   };
 
-  // Quick Amount preset handler
   const handleAmountPreset = (preset: number) => {
     const current = Number(amount) || 0;
     setAmount((current + preset).toString());
@@ -239,7 +224,6 @@ export default function PaymentTransfer() {
     }
   };
 
-  // Select a frequent beneficiary
   const handleSelectBeneficiary = (ben: Beneficiary) => {
     setBeneficiaryName(ben.name);
     setCategory(ben.category || "Transfer & Split");
@@ -260,7 +244,6 @@ export default function PaymentTransfer() {
     toast.info(`Selected ${ben.name}`);
   };
 
-  // Swap Internal Accounts
   const handleSwapInternalAccounts = () => {
     if (!internalTargetAccount || !sourceAccount) return;
     const oldSourceId = sourceAccount.id;
@@ -268,7 +251,6 @@ export default function PaymentTransfer() {
     setInternalTargetAccountId(oldSourceId);
   };
 
-  // Validate form before opening Review Modal
   const handleInitiateTransfer = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -288,7 +270,6 @@ export default function PaymentTransfer() {
       return;
     }
 
-    // Mode-specific validations
     if (transferMode === "bank") {
       if (!targetAccount || targetAccount.length < 8) {
         toast.error("Please enter a valid recipient account number.");
@@ -332,13 +313,11 @@ export default function PaymentTransfer() {
       }
     }
 
-    // Reset PIN and open Review Modal
     setSecurityPin(["", "", "", ""]);
     setPinError(false);
     setIsReviewOpen(true);
   };
 
-  // PIN Input Handling
   const handlePinChange = (index: number, val: string) => {
     if (!/^\d*$/.test(val)) return;
     const newPin = [...securityPin];
@@ -346,7 +325,6 @@ export default function PaymentTransfer() {
     setSecurityPin(newPin);
     setPinError(false);
 
-    // Auto-focus next input
     if (val && index < 3) {
       const nextInput = document.getElementById(`pin-${index + 1}`);
       nextInput?.focus();
@@ -360,7 +338,6 @@ export default function PaymentTransfer() {
     }
   };
 
-  // Execute the confirmed transfer
   const handleFinalSubmit = () => {
     const pinStr = securityPin.join("");
     if (pinStr.length < 4) {
@@ -390,10 +367,9 @@ export default function PaymentTransfer() {
     }
 
     setTimeout(() => {
-      // 1. Deduct from source account
+
       updateAccountBalance(sourceAccount.id, transferAmount, "debit");
 
-      // 2. If internal transfer, also credit target account
       if (transferMode === "internal" && internalTargetAccount) {
         updateAccountBalance(internalTargetAccount.id, transferAmount, "credit");
 
@@ -413,7 +389,6 @@ export default function PaymentTransfer() {
         addTransaction(internalCreditTxn);
       }
 
-      // 3. Add debit transaction record
       const newTxn = {
         id: `txn_${Date.now()}`,
         $id: `txn_${Date.now()}`,
@@ -429,7 +404,6 @@ export default function PaymentTransfer() {
       };
       addTransaction(newTxn);
 
-      // 4. Save beneficiary if checked
       if (saveAsBeneficiary && beneficiaryName.trim()) {
         const newBen: Beneficiary = {
           id: `ben_${Date.now()}`,
@@ -451,7 +425,6 @@ export default function PaymentTransfer() {
       setIsProcessing(false);
       setIsReviewOpen(false);
 
-      // Save completed transaction for receipt modal
       const receiptData = {
         refId: txnRef,
         amount: transferAmount,
@@ -473,7 +446,6 @@ export default function PaymentTransfer() {
           : `Payment of ${formatAmount(transferAmount)} to ${recipientDisplay} completed successfully!`
       );
 
-      // Reset Form
       setAmount("");
       setNote("");
       setTargetAccount("");
@@ -488,7 +460,6 @@ export default function PaymentTransfer() {
     }, 1200);
   };
 
-  // Repeat transfer helper
   const handleRepeatTransfer = (txn: any) => {
     const rawAmt = Math.abs(txn.amount);
     setAmount(rawAmt.toString());
@@ -501,7 +472,6 @@ export default function PaymentTransfer() {
     toast.info(`Loaded transfer of ${formatAmount(rawAmt)} into form`);
   };
 
-  // Filtered recent transfers list
   const recentTransfers = useMemo(() => {
     return transactions
       .filter((t) => {
@@ -523,14 +493,13 @@ export default function PaymentTransfer() {
 
   return (
     <section className="payment-transfer min-h-screen bg-gradient-to-b from-gray-50/50 via-gray-25 to-white dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 pb-16">
-      {/* Top Header */}
+
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200/80 dark:border-gray-800/80 pb-6">
         <HeaderBox
           title="Payment Transfer"
           subtext="Fast, secure, and multi-channel funds transfer to any account, UPI, or contact."
         />
 
-        {/* Security / Feature Badges */}
         <div className="flex items-center gap-2.5 flex-wrap">
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-semibold shadow-xs">
             <Zap className="size-3.5" />
@@ -548,9 +517,9 @@ export default function PaymentTransfer() {
       </div>
 
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Main Transfer Form Area (Left 8 Cols) */}
+
         <div className="lg:col-span-8 flex flex-col gap-8">
-          {/* Step 1: Select Source Bank Account */}
+
           <div className="rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 p-5 sm:p-6 shadow-xs backdrop-blur-md">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -569,7 +538,6 @@ export default function PaymentTransfer() {
               </Link>
             </div>
 
-            {/* Visual Bank Cards Selector */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {accounts.map((acc) => {
                 const isSelected = acc.id === sourceAccount?.id;
@@ -586,7 +554,7 @@ export default function PaymentTransfer() {
                         : "border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/40 hover:border-gray-300 dark:hover:border-gray-700 hover:bg-white dark:hover:bg-gray-800/70"
                     }`}
                   >
-                    {/* Top row */}
+
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2.5">
                         <div
@@ -616,7 +584,6 @@ export default function PaymentTransfer() {
                       )}
                     </div>
 
-                    {/* Balance */}
                     <div className="flex items-baseline justify-between pt-2 border-t border-gray-100 dark:border-gray-800/80">
                       <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Available</span>
                       <span
@@ -638,7 +605,6 @@ export default function PaymentTransfer() {
               })}
             </div>
 
-            {/* Live Remaining Balance Calculation */}
             {sourceAccount && Number(amount) > 0 && (
               <div className="mt-4 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200/60 dark:border-gray-800 flex items-center justify-between text-xs">
                 <span className="text-gray-600 dark:text-gray-400">
@@ -657,7 +623,6 @@ export default function PaymentTransfer() {
             )}
           </div>
 
-          {/* Step 2: Transfer Channel & Recipient Details */}
           <div className="rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 p-5 sm:p-6 shadow-xs backdrop-blur-md">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
@@ -670,7 +635,6 @@ export default function PaymentTransfer() {
               </div>
             </div>
 
-            {/* Frequent Payees Avatar Row */}
             <div className="mb-6">
               <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2.5">
                 Quick Pay / Favorites
@@ -700,7 +664,6 @@ export default function PaymentTransfer() {
               </div>
             </div>
 
-            {/* Transfer Method Tabs */}
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 p-1.5 bg-gray-100/80 dark:bg-gray-800/80 rounded-xl mb-6">
               <button
                 type="button"
@@ -768,9 +731,8 @@ export default function PaymentTransfer() {
               </button>
             </div>
 
-            {/* Tab Form Contents */}
             <form onSubmit={handleInitiateTransfer} className="space-y-4">
-              {/* TAB 1: BANK TRANSFER */}
+
               {transferMode === "bank" && (
                 <div className="space-y-4 animate-in fade-in-50 duration-200">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -847,7 +809,6 @@ export default function PaymentTransfer() {
                 </div>
               )}
 
-              {/* TAB 2: UPI ID TRANSFER */}
               {transferMode === "upi" && (
                 <div className="space-y-4 animate-in fade-in-50 duration-200">
                   <div className="space-y-1.5">
@@ -882,7 +843,6 @@ export default function PaymentTransfer() {
                       </button>
                     </div>
 
-                    {/* Quick UPI Handle suggestions */}
                     <div className="flex items-center gap-1.5 flex-wrap pt-1">
                       <span className="text-[11px] text-gray-400">Quick suffix:</span>
                       {["@okaxis", "@okhdfcbank", "@paytm", "@ybl", "@sbi"].map((handle) => (
@@ -920,7 +880,6 @@ export default function PaymentTransfer() {
                 </div>
               )}
 
-              {/* TAB 3: INTERNAL ACCOUNT TRANSFER */}
               {transferMode === "internal" && (
                 <div className="space-y-4 animate-in fade-in-50 duration-200">
                   <div className="p-4 rounded-xl bg-blue-50/50 dark:bg-blue-950/30 border border-blue-200/60 dark:border-blue-900/50">
@@ -929,7 +888,7 @@ export default function PaymentTransfer() {
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center gap-3">
-                      {/* From Account */}
+
                       <div className="flex-1 w-full p-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
                         <span className="text-[11px] font-semibold text-gray-500 uppercase">From</span>
                         <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
@@ -938,7 +897,6 @@ export default function PaymentTransfer() {
                         <p className="text-xs text-gray-500">Balance: {formatAmount(sourceAccount?.currentBalance || 0)}</p>
                       </div>
 
-                      {/* Swap Button */}
                       <button
                         type="button"
                         onClick={handleSwapInternalAccounts}
@@ -948,7 +906,6 @@ export default function PaymentTransfer() {
                         <ArrowRightLeft className="size-4" />
                       </button>
 
-                      {/* To Account Select */}
                       <div className="flex-1 w-full p-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
                         <span className="text-[11px] font-semibold text-gray-500 uppercase">To (Destination)</span>
                         <select
@@ -973,7 +930,6 @@ export default function PaymentTransfer() {
                 </div>
               )}
 
-              {/* TAB 4: SCAN & PAY QR */}
               {transferMode === "qr" && (
                 <div className="space-y-4 animate-in fade-in-50 duration-200">
                   <div className="flex justify-center gap-3 mb-2">
@@ -1064,7 +1020,7 @@ export default function PaymentTransfer() {
                   ) : (
                     <div className="p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 flex flex-col items-center justify-center text-center">
                       <div className="p-4 rounded-xl bg-white shadow-md border border-gray-200 mb-3">
-                        {/* Static QR illustration */}
+
                         <div className="size-36 bg-gray-900 rounded-lg flex items-center justify-center text-white p-2">
                           <QrCode className="size-32 text-white" />
                         </div>
@@ -1078,7 +1034,6 @@ export default function PaymentTransfer() {
                 </div>
               )}
 
-              {/* TAB 5: PHONE TRANSFER */}
               {transferMode === "phone" && (
                 <div className="space-y-4 animate-in fade-in-50 duration-200">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1125,7 +1080,6 @@ export default function PaymentTransfer() {
                 </div>
               )}
 
-              {/* Step 3: Amount & Details */}
               <div className="pt-4 border-t border-gray-100 dark:border-gray-800 space-y-4">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -1160,7 +1114,6 @@ export default function PaymentTransfer() {
                     </button>
                   </div>
 
-                  {/* Preset Quick Amount Chips */}
                   <div className="flex items-center gap-2 flex-wrap pt-1">
                     {AMOUNT_PRESETS.map((p) => (
                       <button
@@ -1175,7 +1128,6 @@ export default function PaymentTransfer() {
                   </div>
                 </div>
 
-                {/* Category Tagging & Purpose */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
@@ -1208,7 +1160,6 @@ export default function PaymentTransfer() {
                   </div>
                 </div>
 
-                {/* Transfer Speed / Scheduling */}
                 <div className="space-y-2 pt-2">
                   <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
                     Execution Schedule
@@ -1293,7 +1244,6 @@ export default function PaymentTransfer() {
                   )}
                 </div>
 
-                {/* Save Beneficiary Toggle */}
                 {transferMode !== "internal" && (
                   <div className="flex items-center gap-2 pt-2">
                     <input
@@ -1309,7 +1259,6 @@ export default function PaymentTransfer() {
                   </div>
                 )}
 
-                {/* Submit Action Button */}
                 <div className="pt-4">
                   <button
                     type="submit"
@@ -1324,9 +1273,8 @@ export default function PaymentTransfer() {
           </div>
         </div>
 
-        {/* Right 4 Cols: Live Summary, Security Info & Transfer Limits */}
         <div className="lg:col-span-4 flex flex-col gap-6">
-          {/* Real-time Transfer Summary Card */}
+
           <div className="rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 p-5 shadow-xs backdrop-blur-md">
             <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 mb-4">
               <Receipt className="size-4 text-blue-600" />
@@ -1384,7 +1332,6 @@ export default function PaymentTransfer() {
             </div>
           </div>
 
-          {/* Daily Limit & Security Card */}
           <div className="rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-gradient-to-br from-blue-50/50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-950 p-5 shadow-xs">
             <div className="flex items-center gap-2 mb-3">
               <ShieldCheck className="size-5 text-blue-600" />
@@ -1409,7 +1356,6 @@ export default function PaymentTransfer() {
             </div>
           </div>
 
-          {/* Help & Support Widget */}
           <div className="rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 p-4 shadow-xs flex items-center gap-3">
             <div className="size-10 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 flex items-center justify-center shrink-0">
               <Info className="size-5" />
@@ -1422,7 +1368,6 @@ export default function PaymentTransfer() {
         </div>
       </div>
 
-      {/* Bottom Section: Recent Transfers Feed & Quick Re-Send */}
       <div className="mt-12 rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white/90 dark:bg-gray-900/90 p-5 sm:p-6 shadow-xs backdrop-blur-md">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -1524,13 +1469,10 @@ export default function PaymentTransfer() {
         )}
       </div>
 
-      {/* ========================================================================= */}
-      {/* SECURITY PIN & REVIEW MODAL (2-STEP VERIFICATION) */}
-      {/* ========================================================================= */}
       {isReviewOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in-50 duration-200">
           <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 shadow-2xl space-y-5 animate-in zoom-in-95 duration-200">
-            {/* Modal Header */}
+
             <div className="text-center space-y-1">
               <div className="mx-auto size-12 rounded-full bg-blue-50 dark:bg-blue-950/80 text-blue-600 flex items-center justify-center mb-2 shadow-xs">
                 <ShieldCheck className="size-6" />
@@ -1543,7 +1485,6 @@ export default function PaymentTransfer() {
               </p>
             </div>
 
-            {/* Transfer Details Card */}
             <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-950 border border-gray-200/80 dark:border-gray-800 space-y-2.5 text-xs">
               <div className="flex justify-between items-baseline border-b border-gray-200/60 dark:border-gray-800 pb-2">
                 <span className="text-gray-500">Amount Payable</span>
@@ -1581,7 +1522,6 @@ export default function PaymentTransfer() {
               </div>
             </div>
 
-            {/* 4-Digit PIN Input Box */}
             <div className="space-y-2">
               <label className="text-xs font-bold text-center block text-gray-700 dark:text-gray-300">
                 Enter 4-Digit Security Transaction PIN
@@ -1613,7 +1553,6 @@ export default function PaymentTransfer() {
                 </p>
               )}
 
-              {/* Biometric Simulation Quick Action */}
               <div className="flex justify-center pt-1">
                 <button
                   type="button"
@@ -1628,7 +1567,6 @@ export default function PaymentTransfer() {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex gap-3 pt-2">
               <button
                 type="button"
@@ -1662,13 +1600,10 @@ export default function PaymentTransfer() {
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* DIGITAL RECEIPT & SUCCESS MODAL */}
-      {/* ========================================================================= */}
       {completedTxn && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in-50 duration-200">
           <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 shadow-2xl space-y-5 animate-in zoom-in-95 duration-200">
-            {/* Header / Success Indicator */}
+
             <div className="text-center space-y-1">
               <div className="mx-auto size-14 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 flex items-center justify-center mb-3 shadow-md ring-8 ring-emerald-50 dark:ring-emerald-950/30">
                 <CheckCircle2 className="size-8 stroke-[2.5]" />
@@ -1681,7 +1616,6 @@ export default function PaymentTransfer() {
               </p>
             </div>
 
-            {/* Amount Banner */}
             <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-indigo-500/10 border border-emerald-500/20 text-center">
               <span className="text-xs font-semibold text-gray-500">Amount Sent</span>
               <h2 className="text-3xl font-black text-emerald-700 dark:text-emerald-400 font-ibm-plex-serif mt-0.5">
@@ -1689,7 +1623,6 @@ export default function PaymentTransfer() {
               </h2>
             </div>
 
-            {/* Receipt Details Table */}
             <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-950 border border-gray-200/80 dark:border-gray-800 space-y-2 text-xs">
               <div className="flex justify-between items-center py-1 border-b border-gray-200/60 dark:border-gray-800">
                 <span className="text-gray-500">Reference ID</span>
@@ -1751,7 +1684,6 @@ export default function PaymentTransfer() {
               )}
             </div>
 
-            {/* Action Buttons */}
             <div className="space-y-2 pt-1">
               <div className="flex gap-2">
                 <button
@@ -1786,3 +1718,4 @@ export default function PaymentTransfer() {
     </section>
   );
 }
+
