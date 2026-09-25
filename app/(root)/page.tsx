@@ -30,7 +30,6 @@ const Home = () => {
                     />
                 </header>
 
-                {/* Mobile Banks Section */}
                 <section className="flex w-full flex-col gap-6 xl:hidden">
                     <div className="flex w-full justify-between">
                         <h2 className="header-2">My Banks</h2>
@@ -70,3 +69,4 @@ const Home = () => {
 }
 
 export default Home
+
