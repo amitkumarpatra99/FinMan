@@ -34,7 +34,6 @@ const AddBank = () => {
             sharableId: `share_${Date.now()}`,
         };
 
-        // Simulate API delay
         setTimeout(() => {
             addBank(newBank);
             toast.success('Bank added successfully!');
@@ -111,3 +110,4 @@ const AddBank = () => {
 };
 
 export default AddBank;
+
