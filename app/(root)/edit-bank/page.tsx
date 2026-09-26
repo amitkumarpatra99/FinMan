@@ -13,8 +13,6 @@ const EditBank = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    // Initialize form data directly from context if available, or empty strings
-    // This avoids the need for a useEffect to sync state, which causes the lint error
     const [formData, setFormData] = useState({
         bankName: '',
         firstName: '',
@@ -25,7 +23,7 @@ const EditBank = () => {
         if (bankId && accounts.length > 0) {
             const bank = accounts.find((acc) => acc.id === bankId);
             if (bank) {
-                // eslint-disable-next-line react-hooks/set-state-in-effect
+
                 setFormData(prev => {
                     if (prev.bankName === bank.name && prev.firstName === user.firstName && prev.lastName === user.lastName) {
                         return prev;
@@ -45,14 +43,12 @@ const EditBank = () => {
         e.preventDefault();
         setIsLoading(true);
 
-        // Update User
         updateUser({
             ...user,
             firstName: formData.firstName,
             lastName: formData.lastName,
         });
 
-        // Update Bank
         if (bankId) {
             const bank = accounts.find((acc) => acc.id === bankId);
             if (bank) {
@@ -63,7 +59,6 @@ const EditBank = () => {
             }
         }
 
-        // Simulate API delay
         setTimeout(() => {
             setIsLoading(false);
             router.back();
@@ -138,3 +133,4 @@ const EditBank = () => {
 };
 
 export default EditBank;
+
