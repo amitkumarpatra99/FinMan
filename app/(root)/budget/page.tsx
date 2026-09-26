@@ -13,7 +13,7 @@ const Budget = () => {
 
     const handleCreateBudget = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!name.trim() || !amount) {
             toast.error('Please enter valid budget details.');
             return;
@@ -53,7 +53,7 @@ const Budget = () => {
                 />
 
                 <div className="flex flex-col lg:flex-row gap-8">
-                    {/* List of Budgets */}
+
                     <div className="flex-1 flex flex-col gap-6">
                         <h3 className="text-lg font-semibold text-gray-900">Active Budgets</h3>
                         <BudgetList />
