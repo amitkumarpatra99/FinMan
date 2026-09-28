@@ -34,7 +34,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
             };
             form.setValue("email", data.email);
             form.setValue("password", data.password);
-            
+
             const response = await signIn(data);
             if (response) {
                 router.push('/');
@@ -118,7 +118,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
 
     return (
         <div className="flex min-h-screen w-full">
-            {/* Left Side - Form */}
+
             <section className="flex flex-1 flex-col justify-center px-6 py-8 sm:px-10 lg:flex-none lg:px-20 xl:px-24 bg-white w-full lg:w-1/2 transition-all duration-300">
                 <div className="mx-auto w-full max-w-[420px] lg:max-w-sm">
                     <div className="mb-8 lg:mb-12">
@@ -154,7 +154,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
 
                     {user ? (
                         <div className="flex flex-col gap-4">
-                            {/* PlaidLink */}
+
                         </div>
                     ) : (
                         <>
@@ -271,7 +271,6 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                 </div>
             </section>
 
-            {/* Right Side - Image/Branding */}
             <div className="relative hidden w-0 flex-1 lg:block">
                 <div className="absolute inset-0 h-full w-full bg-gradient-to-br from-blue-600 to-indigo-900">
                     <div className="absolute inset-0 bg-[url('/icons/lines.svg')] opacity-20 bg-cover bg-center" />
@@ -298,3 +297,4 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
 };
 
 export default AuthForm;
+
