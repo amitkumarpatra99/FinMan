@@ -20,7 +20,7 @@ const EditProfile = () => {
 
     useEffect(() => {
         if (user) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
+
             setFormData(prev => {
                 if (prev.firstName === user.firstName && prev.lastName === user.lastName && prev.email === user.email) {
                     return prev;
@@ -38,7 +38,6 @@ const EditProfile = () => {
         e.preventDefault();
         setIsLoading(true);
 
-        // Update User
         updateUser({
             ...user,
             firstName: formData.firstName,
@@ -46,7 +45,6 @@ const EditProfile = () => {
             email: formData.email,
         });
 
-        // Simulate API delay
         setTimeout(() => {
             setIsLoading(false);
             toast.success('Profile updated successfully!');
@@ -118,3 +116,4 @@ const EditProfile = () => {
 };
 
 export default EditProfile;
+
