@@ -56,9 +56,9 @@ const BankCard = ({ account, userName }: CreditCardProps) => {
                 />
             </Link>
 
-            {/* COPY */}
         </div>
     )
 }
 
 export default BankCard
+
