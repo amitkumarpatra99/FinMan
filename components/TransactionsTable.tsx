@@ -24,10 +24,8 @@ const TransactionsTable = ({
     const searchParams = useSearchParams();
     const router = useRouter();
 
-    // Controlled search state
     const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
 
-    // Sync search term with URL with debounce
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
             if (enableSearch) {
@@ -43,7 +41,6 @@ const TransactionsTable = ({
         return () => clearTimeout(delayDebounceFn);
     }, [searchTerm, enableSearch, router, searchParams]);
 
-    // Filter transactions
     const filteredTransactions = transactions.filter((t) => {
         const searchLower = searchTerm.toLowerCase();
         return (
@@ -186,3 +183,4 @@ const TransactionsTable = ({
 }
 
 export default TransactionsTable
+
