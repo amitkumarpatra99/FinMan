@@ -18,7 +18,7 @@ const BudgetList = () => {
             ) : (
                 <div className="flex flex-wrap gap-6">
                     {budgets.map((budget) => {
-                        // Calculate spent dynamically based on transactions in context
+
                         const dynamicSpent = transactions
                             .filter(t => t.type === 'debit' && t.category.toLowerCase() === budget.name.toLowerCase())
                             .reduce((sum, t) => sum + Math.abs(t.amount), 0);
