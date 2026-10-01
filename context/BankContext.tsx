@@ -21,14 +21,13 @@ interface BankContextType {
 const BankContext = createContext<BankContextType | undefined>(undefined);
 
 export function BankProvider({ children, user }: { children: React.ReactNode, user?: User }) {
-    // Initialize state properly to handle hydration
+
     const [accounts, setAccounts] = useState<Account[]>(initialAccounts);
     const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
     const [budgets, setBudgets] = useState<Budget[]>(initialBudgets);
     const [currentUser, setCurrentUser] = useState(user || initialUser);
     const [isInitialized, setIsInitialized] = useState(false);
 
-    // Initial load from localStorage
     useEffect(() => {
         const storedAccounts = localStorage.getItem('finman_accounts');
         if (storedAccounts) {
@@ -48,14 +47,12 @@ export function BankProvider({ children, user }: { children: React.ReactNode, us
         setIsInitialized(true);
     }, []);
 
-    // Sync user from prop if changed/available
     useEffect(() => {
         if (user) {
             setCurrentUser(user);
         }
     }, [user]);
 
-    // Persist states whenever they change (after initialization)
     useEffect(() => {
         if (isInitialized) {
             localStorage.setItem('finman_accounts', JSON.stringify(accounts));
@@ -122,14 +119,14 @@ export function BankProvider({ children, user }: { children: React.ReactNode, us
     };
 
     return (
-        <BankContext.Provider value={{ 
-            accounts, 
-            transactions, 
-            budgets, 
-            user: currentUser, 
-            addBank, 
-            deleteBank, 
-            updateBank, 
+        <BankContext.Provider value={{
+            accounts,
+            transactions,
+            budgets,
+            user: currentUser,
+            addBank,
+            deleteBank,
+            updateBank,
             updateUser,
             addTransaction,
             addBudget,
@@ -148,3 +145,4 @@ export function useBank() {
     }
     return context;
 }
+
