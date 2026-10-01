@@ -5,7 +5,6 @@ import { createAdminClient, createSessionClient } from "../appwrite";
 import { cookies } from "next/headers";
 import { parseStringify } from "../utils";
 
-// Check if Appwrite is configured
 const isAppwriteConfigured = () => {
     return !!(
         process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT &&
@@ -16,7 +15,7 @@ const isAppwriteConfigured = () => {
 export const signIn = async ({ email, password }: signInProps) => {
     try {
         if (!isAppwriteConfigured()) {
-            // Demo fallback: Allow sign-in with any valid email and 8+ character password
+
             if (email && password && password.length >= 8) {
                 const mockUser = {
                     $id: "user_mock",
@@ -31,7 +30,7 @@ export const signIn = async ({ email, password }: signInProps) => {
                     dateOfBirth: "1995-01-01",
                     ssn: "1234",
                 };
-                
+
                 (await cookies()).set("finman-demo-session", JSON.stringify(mockUser), {
                     path: "/",
                     httpOnly: true,
@@ -45,7 +44,7 @@ export const signIn = async ({ email, password }: signInProps) => {
 
         const { account } = await createAdminClient();
         const response = await account.createEmailPasswordSession(email, password);
-        
+
         (await cookies()).set("appwrite-session", response.secret, {
             path: "/",
             httpOnly: true,
@@ -62,10 +61,10 @@ export const signIn = async ({ email, password }: signInProps) => {
 
 export const signUp = async (userData: SignUpParams) => {
     const { email, password, firstName, lastName, address1, city, state, postalCode, dateOfBirth, ssn } = userData;
-    
+
     try {
         if (!isAppwriteConfigured()) {
-            // Demo fallback: Create and sign in demo user
+
             const mockUser = {
                 $id: "user_mock_" + Date.now(),
                 email,
@@ -92,9 +91,9 @@ export const signUp = async (userData: SignUpParams) => {
         const { account } = await createAdminClient();
 
         const newUserAccount = await account.create(
-            ID.unique(), 
-            email, 
-            password, 
+            ID.unique(),
+            email,
+            password,
             `${firstName} ${lastName}`
         );
 
@@ -130,7 +129,7 @@ export const getLoggedInUser = async () => {
 
         const client = await createSessionClient();
         if(!client) return null;
-        
+
         const { account } = client;
         const user = await account.get();
         return parseStringify(user);
